@@ -51,31 +51,91 @@ export default class SortingVisualizer extends React.Component{
 
     //   console.log(arraysAreEqual(JSSortedArray,sortedArr));
     }
-    quickSort(){
+    quickSort() {
+  const animations = SortingAlgos.quickSort(this.state.array);
+  const arrayBars = document.getElementsByClassName('array-bar');
 
+  for (let i = 0; i < animations.length; i++) {
+    const animation = animations[i];
+
+    if (animation[0] === "compare" || animation[0] === "revert") {
+      const [_, barOneIdx, barTwoIdx] = animation;
+      const color = animation[0] === "compare" ? "red" : "turquoise";
+      setTimeout(() => {
+        arrayBars[barOneIdx].style.backgroundColor = color;
+        arrayBars[barTwoIdx].style.backgroundColor = color;
+      }, i * 10);
+    } else if (animation[0] === "swap") {
+      const [_, barIdx, newHeight] = animation;
+      setTimeout(() => {
+        arrayBars[barIdx].style.height = `${newHeight}px`;
+      }, i * 10);
     }
-    bubbleSort(){
+  }
+}
 
+    bubbleSort() {
+  const animations = SortingAlgos.bubbleSort(this.state.array);
+  const arrayBars = document.getElementsByClassName('array-bar');
+
+  for (let i = 0; i < animations.length; i++) {
+    const animation = animations[i];
+
+    if (animation[0] === "compare" || animation[0] === "revert") {
+      const [_, barOneIdx, barTwoIdx] = animation;
+      const color = animation[0] === "compare" ? "red" : "turquoise";
+      setTimeout(() => {
+        arrayBars[barOneIdx].style.backgroundColor = color;
+        arrayBars[barTwoIdx].style.backgroundColor = color;
+      }, i * 10);
+    } else if (animation[0] === "swap") {
+      const [_, barIdx, newHeight] = animation;
+      setTimeout(() => {
+        arrayBars[barIdx].style.height = `${newHeight}px`;
+      }, i * 10);
     }
-    heapSort(){
+  }
+}
 
+    heapSort() {
+  const animations = SortingAlgos.heapSort(this.state.array);
+  const arrayBars = document.getElementsByClassName('array-bar');
+
+  for (let i = 0; i < animations.length; i++) {
+    const animation = animations[i];
+
+    if (animation[0] === "compare" || animation[0] === "revert") {
+      const [_, barOneIdx, barTwoIdx] = animation;
+      const color = animation[0] === "compare" ? "red" : "turquoise";
+      setTimeout(() => {
+        arrayBars[barOneIdx].style.backgroundColor = color;
+        arrayBars[barTwoIdx].style.backgroundColor = color;
+      }, i * 10);
+    } else if (animation[0] === "swap") {
+      const [_, barIdx, newHeight] = animation;
+      setTimeout(() => {
+        arrayBars[barIdx].style.height = `${newHeight}px`;
+      }, i * 10);
     }
+  }
+}
 
-    testSortingAlgos(){
-        for(let i=0;i<100;i++){
-            const array=[];
-            const length=randomIntFromInterval(1,1000);
-            for(let i=0;i<length;i++){
-                array.push(randomIntFromInterval(-1000,1000));
-            }   
 
-            const JSSortedArray=this.state.array.slice().sort((a,b)=>a-b);
-      const sortedArr=SortingAlgos.mergeSort(this.state.array);
+    // testSortingAlgos(){
+    //     for(let i=0;i<100;i++){
+    //         const array=[];
+    //         const length=randomIntFromInterval(1,1000);
+    //         for(let i=0;i<length;i++){
+    //             array.push(randomIntFromInterval(-1000,1000));
+    //         }   
+
+    //         const JSSortedArray=this.state.array.slice().sort((a,b)=>a-b);
+    //   const sortedArr=SortingAlgos.mergeSort(this.state.array);
       
 
-      console.log(arraysAreEqual(JSSortedArray,sortedArr));
-        }
-    }
+    //   console.log(arraysAreEqual(JSSortedArray,sortedArr));
+    //     }
+    // }
 
     render(){
         const {array}=this.state;
@@ -93,7 +153,7 @@ export default class SortingVisualizer extends React.Component{
             <button onClick={()=>this.quickSort()}>Quick Sort</button>
             <button onClick={()=>this.bubbleSort()}>Bubble Sort</button>
             <button onClick={()=>this.heapSort()}>Heap Sort</button>
-            <button onClick={()=>this.testSortingAlgos()}>Testing Sorted Algo.</button>
+            {/* <button onClick={()=>this.testSortingAlgos()}>Testing Sorted Algo.</button> */}
             </div>
         )
     }
