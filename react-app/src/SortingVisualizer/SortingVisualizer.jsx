@@ -2,30 +2,43 @@ import React from 'react';
 import './SortingVisualizer.css';
 import * as SortingAlgos from '../SortingAlgos/SortingAlgos.js';
 
-export default class SortingVisualizer extends React.Component{
-    constructor(props){
-        super(props);
 
-        this.state={
-            array:[],
-        };
-    }
+
+export default class SortingVisualizer extends React.Component{
+    // constructor(props){
+    //     super(props);
+
+    //     this.state={
+    //         array:[],
+    //     };
+
+    constructor(props){
+  super(props);
+  this.state = {
+    array: [],
+    speed: 50,
+    sortTime: null, // Add these here!
+  };
+}
+    
 
     componentDidMount(){
         this.resetArray();
     }
 
     resetArray(){
-        const array=[];
-        for(let i=0;i<30;i++){
-            array.push(randomIntFromInterval(5,500));
-        }
-        this.setState({array});
+       const array = [];
+  for (let i = 0; i < 30; i++) {
+    array.push(randomIntFromInterval(5, 500));
+  }
+  this.setState({ array, sortTime: null });
     }
 
     mergeSort(){
        const animations = SortingAlgos.mergeSort(this.state.array);
   const arrayBars = document.getElementsByClassName('array-bar');
+
+  const start = performance.now(); 
 
   for (let i = 0; i < animations.length; i++) {
     const isColorChange = i % 3 !== 2;
@@ -36,24 +49,25 @@ export default class SortingVisualizer extends React.Component{
       setTimeout(() => {
         arrayBars[barOneIdx].style.backgroundColor = color;
         arrayBars[barTwoIdx].style.backgroundColor = color;
-      }, i * 10);
+      }, i * this.state.speed);
     } else {
       setTimeout(() => {
         const [barIdx, newHeight] = animations[i];
         arrayBars[barIdx].style.height = `${newHeight}px`;
-      }, i * 10);
+      }, i * this.state.speed);
     }
   }
 
-    //   const JSSortedArray=this.state.array.slice().sort((a,b)=>a-b);
-    //   const sortedArr=SortingAlgos.mergeSort(this.state.array);
-      
-
-    //   console.log(arraysAreEqual(JSSortedArray,sortedArr));
+    setTimeout(() => {
+    const end = performance.now();
+    this.setState({ sortTime: `${Math.floor(end - start)} ms` });
+  }, animations.length * this.state.speed);
     }
     quickSort() {
   const animations = SortingAlgos.quickSort(this.state.array);
   const arrayBars = document.getElementsByClassName('array-bar');
+
+  const start = performance.now(); 
 
   for (let i = 0; i < animations.length; i++) {
     const animation = animations[i];
@@ -64,20 +78,27 @@ export default class SortingVisualizer extends React.Component{
       setTimeout(() => {
         arrayBars[barOneIdx].style.backgroundColor = color;
         arrayBars[barTwoIdx].style.backgroundColor = color;
-      }, i * 10);
+      },i * this.state.speed);
     } else if (animation[0] === "swap") {
       const [_, barIdx, newHeight] = animation;
       setTimeout(() => {
         arrayBars[barIdx].style.height = `${newHeight}px`;
-      }, i * 10);
+      }, i * this.state.speed);
     }
   }
+
+  setTimeout(() => {
+    const end = performance.now();
+    this.setState({ sortTime: `${Math.floor(end - start)} ms` });
+  }, animations.length * this.state.speed);
 }
 
     bubbleSort() {
   const animations = SortingAlgos.bubbleSort(this.state.array);
   const arrayBars = document.getElementsByClassName('array-bar');
 
+  const start = performance.now(); 
+
   for (let i = 0; i < animations.length; i++) {
     const animation = animations[i];
 
@@ -87,20 +108,30 @@ export default class SortingVisualizer extends React.Component{
       setTimeout(() => {
         arrayBars[barOneIdx].style.backgroundColor = color;
         arrayBars[barTwoIdx].style.backgroundColor = color;
-      }, i * 10);
+      }, i * this.state.speed);
     } else if (animation[0] === "swap") {
       const [_, barIdx, newHeight] = animation;
       setTimeout(() => {
         arrayBars[barIdx].style.height = `${newHeight}px`;
-      }, i * 10);
+      }, i * this.state.speed);
     }
   }
+
+
+  
+
+  setTimeout(() => {
+    const end = performance.now();
+    this.setState({ sortTime: `${Math.floor(end - start)} ms` });
+  }, animations.length * this.state.speed);
 }
 
     heapSort() {
   const animations = SortingAlgos.heapSort(this.state.array);
   const arrayBars = document.getElementsByClassName('array-bar');
 
+  const start = performance.now(); 
+
   for (let i = 0; i < animations.length; i++) {
     const animation = animations[i];
 
@@ -110,14 +141,50 @@ export default class SortingVisualizer extends React.Component{
       setTimeout(() => {
         arrayBars[barOneIdx].style.backgroundColor = color;
         arrayBars[barTwoIdx].style.backgroundColor = color;
-      }, i * 10);
+      }, i * this.state.speed);
     } else if (animation[0] === "swap") {
       const [_, barIdx, newHeight] = animation;
       setTimeout(() => {
         arrayBars[barIdx].style.height = `${newHeight}px`;
-      }, i * 10);
+      }, i * this.state.speed);
     }
   }
+
+  setTimeout(() => {
+    const end = performance.now();
+    this.setState({ sortTime: `${Math.floor(end - start)} ms` });
+  }, animations.length * this.state.speed);
+}
+
+
+compareAllSorts() {
+  const generateRandomArray = () => {
+    const array = [];
+    for (let i = 0; i < 300; i++) {
+      array.push(randomIntFromInterval(5, 1000));
+    }
+    return array;
+  };
+
+  const array = generateRandomArray();
+
+  const sorts = [
+    { name: "Merge Sort", fn: SortingAlgos.mergeSort },
+    { name: "Quick Sort", fn: SortingAlgos.quickSort },
+    { name: "Bubble Sort", fn: SortingAlgos.bubbleSort },
+    { name: "Heap Sort", fn: SortingAlgos.heapSort },
+  ];
+
+  console.log("=== Sorting Time Comparison ===");
+  sorts.forEach(({ name, fn }) => {
+    const arrCopy = array.slice();
+    const start = performance.now();
+    fn(arrCopy); // assumes each fn returns animations but internally sorts
+    const end = performance.now();
+    // console.log(`${name}: ${Math.floor(end - start)} ms`);
+    console.log(`${name}: ${(end - start).toFixed(3)} ms`);
+
+  });
 }
 
 
@@ -147,6 +214,13 @@ export default class SortingVisualizer extends React.Component{
                     
                 </div>
             ))}
+            
+          <p style={{ color: 'white', fontWeight: 'bold', marginTop: '20px' }}>
+  Sort Execution Time: {this.state.sortTime}
+</p>
+ 
+ <button onClick={() => this.compareAllSorts()}>Compare All Sorts</button>
+
 
             <button onClick={()=>this.resetArray()}>Generate New Array</button>
             <button onClick={()=>this.mergeSort()}>Merge Sort</button>
