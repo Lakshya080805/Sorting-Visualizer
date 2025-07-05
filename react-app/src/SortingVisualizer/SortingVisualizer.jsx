@@ -188,48 +188,64 @@ compareAllSorts() {
 }
 
 
-    // testSortingAlgos(){
-    //     for(let i=0;i<100;i++){
-    //         const array=[];
-    //         const length=randomIntFromInterval(1,1000);
-    //         for(let i=0;i<length;i++){
-    //             array.push(randomIntFromInterval(-1000,1000));
-    //         }   
-
-    //         const JSSortedArray=this.state.array.slice().sort((a,b)=>a-b);
-    //   const sortedArr=SortingAlgos.mergeSort(this.state.array);
-      
-
-    //   console.log(arraysAreEqual(JSSortedArray,sortedArr));
-    //     }
-    // }
+    
 
     render(){
         const {array}=this.state;
 
-        return(
-            <div className='array-container'>
-            {array.map((value,idx)=>(
-                <div className='array-bar' key={idx} style={{height:`${value}px`}}>
+//         return(
+//             <div className='array-container'>
+//             {array.map((value,idx)=>(
+//                 <div className='array-bar' key={idx} style={{height:`${value}px`}}>
                     
-                </div>
-            ))}
+//                 </div>
+//             ))}
             
-          <p style={{ color: 'white', fontWeight: 'bold', marginTop: '20px' }}>
-  Sort Execution Time: {this.state.sortTime}
-</p>
+//           <p style={{ color: 'white', fontWeight: 'bold', marginTop: '20px' }}>
+//   Sort Execution Time: {this.state.sortTime}
+// </p>
  
- <button onClick={() => this.compareAllSorts()}>Compare All Sorts</button>
+//  <button onClick={() => this.compareAllSorts()}>Compare All Sorts</button>
 
 
-            <button onClick={()=>this.resetArray()}>Generate New Array</button>
-            <button onClick={()=>this.mergeSort()}>Merge Sort</button>
-            <button onClick={()=>this.quickSort()}>Quick Sort</button>
-            <button onClick={()=>this.bubbleSort()}>Bubble Sort</button>
-            <button onClick={()=>this.heapSort()}>Heap Sort</button>
-            {/* <button onClick={()=>this.testSortingAlgos()}>Testing Sorted Algo.</button> */}
-            </div>
-        )
+//             <button onClick={()=>this.resetArray()}>Generate New Array</button>
+//             <button onClick={()=>this.mergeSort()}>Merge Sort</button>
+//             <button onClick={()=>this.quickSort()}>Quick Sort</button>
+//             <button onClick={()=>this.bubbleSort()}>Bubble Sort</button>
+//             <button onClick={()=>this.heapSort()}>Heap Sort</button>
+//             {/* <button onClick={()=>this.testSortingAlgos()}>Testing Sorted Algo.</button> */}
+//             </div>
+//         )
+
+
+return (
+  <div className='array-container'>
+    <div className='bar-wrapper'>
+      {array.map((value, idx) => (
+        <div
+  className='array-bar'
+  key={idx}
+  style={{ height: `${value}px` }}
+/>
+
+      ))}
+    </div>
+
+    <p style={{ color: 'white', fontWeight: 'bold', marginTop: '10px' }}>
+      Sort Execution Time: {this.state.sortTime}
+    </p>
+
+    <div className='controls'>
+      <button onClick={() => this.compareAllSorts()}>Compare All Sorts</button>
+      <button onClick={() => this.resetArray()}>Generate New Array</button>
+      <button onClick={() => this.mergeSort()}>Merge Sort</button>
+      <button onClick={() => this.quickSort()}>Quick Sort</button>
+      <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+      <button onClick={() => this.heapSort()}>Heap Sort</button>
+    </div>
+  </div>
+);
+
     }
 }
 

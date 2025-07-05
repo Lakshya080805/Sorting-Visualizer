@@ -9,6 +9,7 @@ function App() {
 
   return (
     <div className='App'>
+      <h1>Sorting Visuallizer</h1>
      <SortingVisualizer></SortingVisualizer>
     </div>
   );
