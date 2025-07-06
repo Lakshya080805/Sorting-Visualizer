@@ -11,5 +11,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Sorting-Visualizer', // <-- this ensures correct routing
+  base: '/Sorting-Visualizer/', // <-- this ensures correct routing
 })

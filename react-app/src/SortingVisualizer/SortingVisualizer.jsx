@@ -17,7 +17,8 @@ export default class SortingVisualizer extends React.Component{
   this.state = {
     array: [],
     speed: 50,
-    sortTime: null, // Add these here!
+    sortTime: null,
+    comparisonResults: [],  // Add these here!
   };
 }
     
@@ -175,16 +176,28 @@ compareAllSorts() {
     { name: "Heap Sort", fn: SortingAlgos.heapSort },
   ];
 
-  console.log("=== Sorting Time Comparison ===");
-  sorts.forEach(({ name, fn }) => {
-    const arrCopy = array.slice();
-    const start = performance.now();
-    fn(arrCopy); // assumes each fn returns animations but internally sorts
-    const end = performance.now();
-    // console.log(`${name}: ${Math.floor(end - start)} ms`);
-    console.log(`${name}: ${(end - start).toFixed(3)} ms`);
+  // console.log("=== Sorting Time Comparison ===");
+  // sorts.forEach(({ name, fn }) => {
+  //   const arrCopy = array.slice();
+  //   const start = performance.now();
+  //   fn(arrCopy); // assumes each fn returns animations but internally sorts
+  //   const end = performance.now();
+  //   // console.log(`${name}: ${Math.floor(end - start)} ms`);
+  //   console.log(`${name}: ${(end - start).toFixed(3)} ms`);
 
-  });
+  // });
+
+  const results = sorts.map(({ name, fn }) => {
+  const arrCopy = array.slice();
+  const start = performance.now();
+  fn(arrCopy);
+  const end = performance.now();
+  const time = (end - start).toFixed(3);
+  return { name, time };
+});
+
+this.setState({ comparisonResults: results });
+
 }
 
 
@@ -234,6 +247,20 @@ return (
     <p style={{ color: 'white', fontWeight: 'bold', marginTop: '10px' }}>
       Sort Execution Time: {this.state.sortTime}
     </p>
+
+    {this.state.comparisonResults.length > 0 && (
+  <div style={{ color: 'white', marginTop: '1rem' }}>
+    <h3>Sort Time Comparison:</h3>
+    <ul style={{ listStyle: 'none', padding: 0 }}>
+      {this.state.comparisonResults.map((res, idx) => (
+        <li key={idx}>
+          <strong>{res.name}:</strong> {res.time} ms
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
 
     <div className='controls'>
       <button onClick={() => this.compareAllSorts()}>Compare All Sorts</button>
